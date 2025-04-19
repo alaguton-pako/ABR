@@ -1,7 +1,8 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-import { PodcastResponse } from "./types";
+import { PodCastByIdResponse, PodcastResponse } from "./types";
+import { EpisodeListResponse } from "../episode/types";
 
 export const useGetTopPodcasts = () => {
   return useQuery<PodcastResponse>({
@@ -14,7 +15,7 @@ export const useGetTopPodcasts = () => {
 };
 
 export const useGetPodcastById = (id: number | string) =>
-  useQuery({
+  useQuery<PodCastByIdResponse>({
     queryKey: ["podcast", id],
     queryFn: async () => {
       const { data } = await axios.get(`/podcasts/${id}`);
@@ -36,7 +37,7 @@ export const useGetSearchPodcasts = (query: string) =>
   });
 
 export const useGetPodcastEpisodes = (id: number | string) =>
-  useQuery({
+  useQuery<EpisodeListResponse>({
     queryKey: ["podcastEpisodes", id],
     queryFn: async () => {
       const { data } = await axios.get(

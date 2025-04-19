@@ -4,27 +4,18 @@ import { useGetTopPodcasts } from "@/feature/podcast/api";
 import Image from "next/image";
 import PlayButton from "../ui/PlayButton";
 import PodcastCard from "../ui/PodcastCard";
+import { useGetLatestEpisodes } from "@/feature/episode/api";
+import Link from "next/link";
 
 const EditorsPickSection = () => {
-  // const { data, isLoading, error } = useGetTopPodcasts();
-  // if (isLoading) return <div>Loading...</div>;
-  // // Access the actual podcasts data and pagination
-  // const podcasts = data?.data?.data;
-  // const randomPodcasts = podcasts?.sort(() => Math.random() - 0.5).slice(0, 3);
-
-  const episodes = [
-    {
-      imageSrc: "/advert6.png",
-      title: "The Funeral Experience: The Good, the Bad, and the Ugly",
-      date: "Sept 2, 2023 | 28 mins",
-    },
-    {
-      imageSrc: "/advert6.png",
-      title: "Widowhood: Strength in Silence",
-      date: "Sept 9, 2023 | 32 mins",
-    },
-  ];
-
+  const { data, isLoading } = useGetLatestEpisodes(1, 3);
+  const episodes = data && data?.data?.data;
+  const rightCardData = episodes?.slice(1, 3);
+  const leftCardData = episodes && episodes[0];
+  if (isLoading) {
+    return <div className="flex items-center justify-center">Loading.....</div>;
+  }
+  
   return (
     <>
       <div className="bg-[#F6F6F6]">
@@ -41,16 +32,18 @@ const EditorsPickSection = () => {
             {/* Left Large Card with Background Image */}
             <div className="relative h-[300px] md:h-[500px] bg-gray-500 rounded-t-sm overflow-hidden">
               <Image
-                src="/advert6.png"
+                src={leftCardData?.picture_url || "/advert6.png"}
                 alt="Featured Podcast"
                 fill
                 className="object-cover"
               />
               <div className="absolute bottom-0 left-0 w-full h-[20%] bg-black/60 text-white flex items-center px-4 rounded-b-md">
                 <div className="flex items-center gap-2">
-                  <PlayButton />
+                  <Link href={`/podcast/${leftCardData?.podcast_id}/episode/${leftCardData?.id}`}>
+                    <PlayButton />
+                  </Link>
                   <h2 className="text-base md:text-lg font-semibold truncate">
-                    Podcast Title Goes Here
+                    {leftCardData?.title}
                   </h2>
                 </div>
               </div>
@@ -61,14 +54,18 @@ const EditorsPickSection = () => {
               {/* Top Two Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-9 mb-5">
                 {/* first part */}
-                {episodes.map((ep, index) => (
-                  <PodcastCard
-                    key={index}
-                    imageSrc={ep.imageSrc}
-                    title={ep.title}
-                    date={ep.date}
-                  />
-                ))}
+                {rightCardData &&
+                  rightCardData?.map((ep) => (
+                    <PodcastCard
+                      key={ep?.id}
+                      imageSrc={ep?.picture_url}
+                      title={ep?.title}
+                      date={ep?.published_at}
+                      duration={ep?.duration}
+                      episodeId={ep?.id}
+                      podcastId={ep?.podcast_id}
+                    />
+                  ))}
               </div>
               {/* Bottom Full Width Card */}
               <div

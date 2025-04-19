@@ -99,7 +99,7 @@ const page = () => {
   const cardData2 = [
     {
       id: 1,
-      image: "/catTsb.png",
+      image: "/catOne.png",
       date: "Apr 17, 2022",
       time: "10:45 AM",
       title: "News & Storytelling",

@@ -1,26 +1,13 @@
 import React from "react";
 import CustomCardLayout from "../ui/CustomCardLayout";
-import { CustomCard } from "../ui/CustomCard";
 import { Separator } from "@/components/ui/separator";
 import PodcastCard from "../ui/PodcastCard";
-const Content = () => {
-  const episodes = [
-    {
-      imageSrc: "/advert6.png",
-      title: "The Funeral Experience: The Good, the Bad, and the Ugly",
-      date: "Sept 2, 2023 | 28 mins",
-    },
-    {
-      imageSrc: "/advert6.png",
-      title: "Widowhood: Strength in Silence",
-      date: "Sept 9, 2023 | 32 mins",
-    },
-    {
-      imageSrc: "/advert6.png",
-      title: "The Future of Remote Work",
-      date: "Sept 15, 2023 | 35 mins",
-    },
-  ];
+import { useGetPodcastEpisodes } from "@/feature/podcast/api";
+
+const Content = ({ id }: { id?: string }) => {
+  const { data, isLoading } = useGetPodcastEpisodes(id ?? 0);
+  const episodes = data && data?.data?.data;
+  console.log(id);
   return (
     <>
       <CustomCardLayout>
@@ -31,12 +18,15 @@ const Content = () => {
         </div>
         <Separator />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {episodes.map((ep, index) => (
+          {episodes?.map((ep) => (
             <PodcastCard
-              key={index}
-              imageSrc={ep.imageSrc}
-              title={ep.title}
-              date={ep.date}
+              key={ep?.id}
+              imageSrc={ep?.picture_url}
+              title={ep?.title}
+              date={ep?.published_at}
+              duration={ep?.duration}
+              podcastId={ep?.podcast_id}
+              episodeId={ep?.id}
             />
           ))}
         </div>
