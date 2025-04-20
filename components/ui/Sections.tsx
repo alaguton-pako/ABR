@@ -1,33 +1,20 @@
 // components/Sections.tsx
 import React from "react";
-import { ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import CustomCardTwo from "./CustomCardTwo"; 
+import CustomCardTwo from "./CustomCardTwo";
+import ViewMoreButton from "./ViewMoreButton";
 
-
-// Define type for card data
-type CardItem = {
-  id: number;
-  image: string;
-  date: string;
-  time: string;
+interface CardData {
+  id?: number;
   title: string;
-  description: string;
-};
+  picture_url: string;
+}
 
 type SectionsProps = {
   sectionTitle: string;
-  cardData: CardItem[];
-  showButton?: boolean;
-  onViewAllClick?: () => void;
+  cardData: CardData[];
 };
 
-const Sections: React.FC<SectionsProps> = ({
-  sectionTitle,
-  cardData,
-  showButton = true,
-  onViewAllClick,
-}) => {
+const Sections: React.FC<SectionsProps> = ({ sectionTitle, cardData }) => {
   return (
     <div className="w-full">
       {/* Section Header */}
@@ -38,24 +25,17 @@ const Sections: React.FC<SectionsProps> = ({
             {sectionTitle}
           </h3>
         </div>
-        {showButton && (
-          <Button
-            className="bg-inherit text-blue-400 border rounded-full"
-            onClick={onViewAllClick}
-          >
-            View All
-            <ChevronRight className="ml-1" size={16} />
-          </Button>
-        )}
+        <ViewMoreButton />
       </div>
 
       {/* Cards */}
       <div className="flex flex-wrap gap-6">
-        {cardData.map((item) => (
+        {cardData?.map((item) => (
           <CustomCardTwo
-            key={item.id}
-            title={item.title}
-            imageSrc={item.image}
+            key={item?.id}
+            title={item?.title}
+            imageSrc={item?.picture_url}
+            podcastId={item?.id}
           />
         ))}
       </div>

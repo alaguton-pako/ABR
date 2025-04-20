@@ -1,6 +1,4 @@
 import React from "react";
-import Image from "next/image";
-import PlayButton from "../ui/PlayButton";
 import CustomCardLayout from "../ui/CustomCardLayout";
 import CustomCardAnimation from "../ui/CustomCardAnimation";
 const Trending = () => {

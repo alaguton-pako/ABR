@@ -6,13 +6,15 @@ import { formatReadableDate } from "@/lib/helper";
 import { formatDurationToMinutes } from "@/lib/helper";
 import Link from "next/link";
 
-interface PodcastCardProps {
+export interface PodcastCardProps {
   imageSrc: string;
   title: string;
   date: string;
   duration: number;
   podcastId?: number;
   episodeId?: number;
+  className?: string;
+  description?: string;
 }
 
 const PodcastCard = ({

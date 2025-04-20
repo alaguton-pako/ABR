@@ -1,3 +1,4 @@
+"use client";
 import { CatCard } from "@/components/ui/CatCard";
 import CustomCardLayout from "@/components/ui/CustomCardLayout";
 import { Separator } from "@/components/ui/separator";
@@ -12,90 +13,14 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import ExploreOtherCat from "@/components/ExploreOtherCat";
+import { useGetLatestEpisodes } from "@/feature/episode/api";
 
 const page = () => {
-  const cardData = [
-    {
-      id: 1,
-      image: "/advert6.png",
-      date: "Apr 17, 2022",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 2,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 3,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 4,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 5,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 6,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 7,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 7,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 7,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 7,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-  ];
+  const { data, isLoading } = useGetLatestEpisodes(1, 20);
+  const episodes = data && data?.data?.data;
+  if (isLoading) {
+    return <div className="flex justify-center items-center">loading....</div>;
+  }
   const cardData2 = [
     {
       id: 1,
@@ -156,14 +81,16 @@ const page = () => {
         </div>
         {/* Cards */}
         <div className="flex flex-wrap gap-6">
-          {cardData.map((item) => (
+          {episodes?.map((item) => (
             <CatCard
-              key={item.id}
-              title={item.title}
-              image={item.image}
-              date={item.date}
-              description={item.description}
-              time={item.time}
+              key={item?.id}
+              title={item?.title}
+              image={item?.picture_url}
+              date={item?.published_at}
+              description={item?.description}
+              time={item?.duration}
+              podcastId={item?.podcast_id}
+              episodeId={item?.id}
             />
           ))}
         </div>

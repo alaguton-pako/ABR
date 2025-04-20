@@ -1,43 +1,23 @@
+"use client";
 import React from "react";
 import CustomCardLayout from "../ui/CustomCardLayout";
 import Sections from "../ui/Sections";
-import CustomCardTwo from "../ui/CustomCardTwo";
+import { useGetTopCategories } from "@/feature/category/api";
+import { PodcastCategory } from "@/feature/category/types";
+import { title } from "process";
 
 const OtherPodcast = () => {
-  const cardData = [
-    {
-      id: 1,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 1,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 1,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 1,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-  ];
+  const { data, isLoading } = useGetTopCategories();
+  const podcasts = data?.data?.slice(1, 5);
+  const cardData =
+    podcasts?.map((ep: PodcastCategory) => ({
+      title: ep?.name,
+      picture_url: ep?.image_url,
+    })) || [];
+
+  if (isLoading) {
+    return <div className="flex justify-center items-center">loading....</div>;
+  }
   return (
     <CustomCardLayout>
       <section>

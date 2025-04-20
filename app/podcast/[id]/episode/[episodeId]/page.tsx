@@ -20,7 +20,6 @@ const page = () => {
   if (isLoading) {
     return <div className="flex items-center justify-center">Loading.....</div>;
   }
-
   return (
     <div>
       <div className="relative h-[100vh] w-full bg-gradient-to-br from-[#2B3221]/90 to-[#817e7e]/20 p-8 overflow-hidden">
@@ -62,7 +61,7 @@ const page = () => {
               <div className="flex flex-col text-sm gap-4">
                 <div className="flex items-center">
                   <h1 className=" text-gray-300 font-semibold">
-                    {formatReadableDate(episodeContent?.published_at ?? '')}
+                    {formatReadableDate(episodeContent?.published_at ?? "")}
                   </h1>
                   <div className="text-sm flex items-center text-gray-300">
                     <Dot size={40} />
@@ -80,7 +79,14 @@ const page = () => {
                 </p>
               </div>
               <div className="mt-20">
-                <PlayComponent />
+                {episodeContent?.content_url && (
+                  <PlayComponent
+                    contentUrl={episodeContent.content_url}
+                    podcastId={episodeContent?.podcast_id}
+                    episodeId={episodeContent?.id}
+                    podcastTitle={episodeContent?.title}
+                  />
+                )}
               </div>
             </div>
           </div>

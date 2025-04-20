@@ -1,50 +1,17 @@
+"use client";
 import React from "react";
 import CustomCardLayout from "../ui/CustomCardLayout";
 import { CustomCard } from "../ui/CustomCard";
+import { useGetLatestEpisodes } from "@/feature/episode/api";
+import { formatReadableDate } from "@/lib/helper";
+import { CardCarousel } from "../CardCarousel";
 
 const NewlyAddedEpisode = () => {
-  const cardData = [
-    {
-      id: 1,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 2,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 3,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 4,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-    {
-      id: 5,
-      image: "/advert6.png",
-      date: "Apr 17",
-      time: "10:45 AM",
-      title: "First Card Title",
-      description: "More Episodes",
-    },
-  ];
+  const { data, isLoading } = useGetLatestEpisodes(5, 11);
+  const episodes = data && data?.data?.data?.slice(5);
+  if (isLoading) {
+    return <div className="flex justify-center items-center">loading....</div>;
+  }
   return (
     <>
       <CustomCardLayout>
@@ -54,11 +21,31 @@ const NewlyAddedEpisode = () => {
           </h1>
         </div>
         <section>
-          <div className="flex flex-wrap gap-6">
-            {cardData.map(({ id, ...rest }) => (
-              <CustomCard key={id} {...rest} />
-            ))}
-          </div>
+          <CardCarousel
+            items={episodes ?? []}
+            renderCard={({
+              id,
+              picture_url,
+              published_at,
+              title,
+              description,
+              duration,
+              podcast_id,
+              ...rest
+            }) => (
+              <CustomCard
+                key={id}
+                episodeId={id}
+                imageSrc={picture_url}
+                date={formatReadableDate(published_at)}
+                title={title}
+                description={description}
+                duration={duration}
+                podcastId={podcast_id}
+                {...rest}
+              />
+            )}
+          />
         </section>
       </CustomCardLayout>
     </>

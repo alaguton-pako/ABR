@@ -1,6 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
+import { TopCategoriesResponse } from "./types";
 
 export const useGetSearchPodcasts = (query: string) =>
   useQuery({
@@ -15,7 +16,7 @@ export const useGetSearchPodcasts = (query: string) =>
   });
 
 export const useGetTopCategories = () =>
-  useQuery({
+  useQuery<TopCategoriesResponse>({
     queryKey: ["topCategories"],
     queryFn: async () => {
       const { data } = await axios.get("/top-categories");

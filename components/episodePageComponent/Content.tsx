@@ -7,7 +7,9 @@ import { useGetPodcastEpisodes } from "@/feature/podcast/api";
 const Content = ({ id }: { id?: string }) => {
   const { data, isLoading } = useGetPodcastEpisodes(id ?? 0);
   const episodes = data && data?.data?.data;
-  console.log(id);
+  if (isLoading) {
+    return <div className="flex items-center justify-center">Loading.....</div>;
+  }
   return (
     <>
       <CustomCardLayout>

@@ -10,6 +10,9 @@ const page = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetPodcastById(id as string);
   const podcastContent = data && data?.data;
+  if (isLoading) {
+    return <div className="flex items-center justify-center">Loading.....</div>;
+  }
   return (
     <>
       <div className="h-[500px] w-full bg-gradient-to-br from-[#2B3221] to-[#817e7e] p-14">
@@ -30,7 +33,7 @@ const page = () => {
                 className="rounded-sm"
               />
             </div>
-            <div className="flex gap-4">
+            <div className="w-full flex gap-4">
               <div className="flex flex-col gap-6 p-6">
                 <h1 className="text-lg text-gray-400 font-semibold">Podcast</h1>
                 <h2 className="text-lg md:text-2xl text-white font-bold">
@@ -85,7 +88,7 @@ const page = () => {
           </div>
         </div>
       </div>
-      <Content />
+      <Content id={String(id)} />
     </>
   );
 };

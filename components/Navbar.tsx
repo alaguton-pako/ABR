@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import ArrowDownIcon from "./ui/ArrowDownIcon";
@@ -5,16 +6,23 @@ import SearchIcon from "./ui/SearchIcon";
 import CustomIcon from "./ui/CustomIcon";
 import PlayButton from "./ui/PlayButton";
 import Link from "next/link";
+import PodcastControl from "./PodCastControl";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+
 const Navbar = () => {
+  const { isPlaying } = useSelector((state: RootState) => state.player);
   return (
     <>
       <div className="px-8 py-4 h-16 w-full flex justify-between items-center bg-white">
         {/* Logo Section */}
-        <Link href={"/"}>
-          <div>
-            <Image src="/compLogo.png" height={120} width={120} alt="Logo" />
-          </div>
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href={"/"}>
+            <div>
+              <Image src="/compLogo.png" height={120} width={120} alt="Logo" />
+            </div>
+          </Link>
+        </div>
         {/* Navigation and Search Section */}
         <div className="flex items-center gap-16">
           {/* Navigation Links */}
@@ -54,17 +62,22 @@ const Navbar = () => {
             {/* Content centered vertically */}
             <div className="relative z-10 w-full h-full p-4 flex items-center">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
-                <div className="flex items-center gap-4">
-                  <PlayButton />
-                  <div className="flex flex-col">
-                    <p className="text-sm font-semibold text-white">
-                      Listen to ABR Live Radio
-                    </p>
-                    <p className="text-xs text-[#9CCC65] font-semibold">
-                      ON AIR
-                    </p>
+                {isPlaying ? (
+                  <PodcastControl />
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <PlayButton />
+                    <div className="flex flex-col">
+                      <p className="text-sm font-semibold text-white">
+                        Listen to ABR Live Radio
+                      </p>
+                      <p className="text-xs text-[#9CCC65] font-semibold">
+                        ON AIR
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
+
                 <div className="flex items-center gap-2 text-white hover:text-[#9CCC65] cursor-pointer transition-colors">
                   <CustomIcon src="/schedule.png" height={20} width={20} />
                   <p className="text-xs font-medium">View schedules</p>

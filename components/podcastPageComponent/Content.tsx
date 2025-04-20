@@ -12,44 +12,16 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
+import { useGetPodcastEpisodes } from "@/feature/podcast/api";
+import { formatReadableDate } from "@/lib/helper";
 
-const Content = () => {
-  // Episode data array
-  const episodes = [
-    {
-      id: 1,
-      image: "/advert6.png",
-      date: "SEPT 2, 2023 · 28 MINS",
-      title: "THE FUNERAL EXPERIENCE: THE GOOD, THE BAD AND THE UGLY",
-      description:
-        "The show aims to shed light on the challenges faced by less privileged widows, providing support and a platform to promote a better life. Join us in making a difference. Examining how communities can come together to support those experiencing loss, featuring interviews with support group leaders.Examining how communities can come together to support those experiencing loss, featuring interviews with support group leaders.Examining how communities can come together to support those experiencing loss, featuring interviews with support group leaders.Examining how communities can come together to support those experiencing loss, featuring interviews with support group leaders.Examining how communities can come together to support those experiencing loss, featuring interviews with support group leaders..",
-    },
-    {
-      id: 2,
-      image: "/advert4.png",
-      date: "AUG 26, 2023 · 32 MINS",
-      title: "NAVIGATING GRIEF: PERSONAL JOURNEYS",
-      description:
-        "Exploring personal stories of loss and recovery, this episode delves into the various ways people cope with grief and find meaning after tragedy.",
-    },
-    {
-      id: 3,
-      image: "/advert3.png",
-      date: "AUG 19, 2023 · 25 MINS",
-      title: "COMMUNITY SUPPORT SYSTEMS",
-      description:
-        "Examining how communities can come together to support those experiencing loss, featuring interviews with support group leaders.",
-    },
-    {
-      id: 4,
-      image: "/advert6.png",
-      date: "AUG 12, 2023 · 35 MINS",
-      title: "FINANCIAL CHALLENGES AFTER LOSS",
-      description:
-        "A deep dive into the economic hardships faced by widows and widowers, with expert advice on financial planning during difficult times.",
-    },
-  ];
-
+const Content = ({ id }: { id?: string }) => {
+  const currentPage = 1;
+  const { data, isLoading } = useGetPodcastEpisodes(id ?? 0, currentPage, 10);
+  const episodes = data && data?.data?.data;
+  if (isLoading) {
+    return <div className="flex items-center justify-center">Loading.....</div>;
+  }
   return (
     <div className="p-8">
       <div className="p-4">
@@ -61,13 +33,16 @@ const Content = () => {
                 <span className="text-gray-500 font-semibold">
                   ALL EPISODES{" "}
                 </span>
-                ({episodes.length} AVAILABLE)
+                ({episodes?.length} AVAILABLE)
               </h1>
 
               {/* Episodes List */}
               <div className="">
-                {episodes.map((episode) => (
-                  <Link key={episode.id} href={"/podcast/1/episode/1"}>
+                {episodes?.map((episode) => (
+                  <Link
+                    key={episode.id}
+                    href={`/podcast/${id}/episode/${episode?.id}`}
+                  >
                     <div
                       key={episode.id}
                       className="flex flex-col md:flex-row gap-6 border-y border-[#DCDCDC] py-8"
@@ -75,8 +50,8 @@ const Content = () => {
                       {/* Fixed Size Image Container */}
                       <div className="flex-shrink-0 w-full md:w-[150px] h-[150px] relative">
                         <Image
-                          src={episode.image}
-                          alt={`Episode: ${episode.title}`}
+                          src={episode?.picture_url}
+                          alt={`Episode: ${episode?.title}`}
                           fill
                           className="rounded-xs object-cover"
                         />
@@ -85,11 +60,13 @@ const Content = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col gap-3">
                           <h1 className="text-sm text-gray-400 font-semibold">
-                            {episode.date}
+                            {formatReadableDate(episode?.published_at)}
                           </h1>
-                          <h2 className="text-lg font-bold">{episode.title}</h2>
+                          <h2 className="text-lg font-bold">
+                            {episode?.title}
+                          </h2>
                           <p className="text-sm text-gray-600 line-clamp-3">
-                            {episode.description}
+                            {episode?.description}
                           </p>
 
                           <div className="w-full flex items-center gap-4 mt-2">

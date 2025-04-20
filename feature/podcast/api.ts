@@ -14,6 +14,37 @@ export const useGetTopPodcasts = () => {
   });
 };
 
+export const useGetPodcastEpisodes = (
+  id: number | string,
+  page = 1,
+  perPage = 15
+) =>
+  useQuery<EpisodeListResponse>({
+    queryKey: ["podcastEpisodes", id, page, perPage],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `/podcasts/${id}/episodes?page=${page}&per_page=${perPage}`
+      );
+      return data;
+    },
+    enabled: !!id,
+  });
+
+export const useGetTrendingPodcast = (
+  page: number = 3,
+  perPage: number = 15
+) => {
+  return useQuery<PodcastResponse>({
+    queryKey: ["trendingPodcasts", page, perPage],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `/popular-and-trending-podcasts?page==${page}&per_page=${perPage}`
+      );
+      return data;
+    },
+  });
+};
+
 export const useGetPodcastById = (id: number | string) =>
   useQuery<PodCastByIdResponse>({
     queryKey: ["podcast", id],
@@ -34,16 +65,4 @@ export const useGetSearchPodcasts = (query: string) =>
       return data;
     },
     enabled: !!query,
-  });
-
-export const useGetPodcastEpisodes = (id: number | string) =>
-  useQuery<EpisodeListResponse>({
-    queryKey: ["podcastEpisodes", id],
-    queryFn: async () => {
-      const { data } = await axios.get(
-        `/podcasts/${id}/episodes?page=1&per_page=15`
-      );
-      return data;
-    },
-    enabled: !!id,
   });
