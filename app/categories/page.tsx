@@ -3,23 +3,25 @@ import { CatCard } from "@/components/ui/CatCard";
 import CustomCardLayout from "@/components/ui/CustomCardLayout";
 import { Separator } from "@/components/ui/separator";
 import { Ellipsis } from "lucide-react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { PaginationControls } from "@/components/ui/PaginationsControl";
 import ExploreOtherCat from "@/components/ExploreOtherCat";
 import { useGetLatestEpisodes } from "@/feature/episode/api";
+import { useState } from "react";
+import { RedLoader } from "@/components/ui/Loader";
 
 const page = () => {
-  const { data, isLoading } = useGetLatestEpisodes(1, 20);
+  const [currentPage, setCurrentPage] = useState(1);
+  const perPage = 20;
+  const { data, isLoading } = useGetLatestEpisodes(currentPage, perPage);
   const episodes = data && data?.data?.data;
+  const paginationData = data?.data;
+
   if (isLoading) {
-    return <div className="flex justify-center items-center">loading....</div>;
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
   }
   const cardData2 = [
     {
@@ -94,23 +96,13 @@ const page = () => {
             />
           ))}
         </div>
+        {/* Pagination */}
         <div className="mb-4">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">2</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={paginationData?.last_page || 1}
+            onPageChange={setCurrentPage}
+          />
         </div>
         <Separator />
         <div className="mt-10 mb-15 flex flex-col gap-4">

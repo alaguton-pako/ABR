@@ -5,13 +5,18 @@ import CustomIcon from "@/components/ui/CustomIcon";
 import Content from "@/components/podcastPageComponent/Content";
 import { useParams } from "next/navigation";
 import { useGetPodcastById } from "@/feature/podcast/api";
+import { RedLoader } from "@/components/ui/Loader";
 
 const page = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetPodcastById(id as string);
   const podcastContent = data && data?.data;
   if (isLoading) {
-    return <div className="flex items-center justify-center">Loading.....</div>;
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
   }
   return (
     <>

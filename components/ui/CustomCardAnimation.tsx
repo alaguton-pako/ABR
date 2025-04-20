@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useGetTrendingPodcast } from "@/feature/podcast/api";
 import { Podcast } from "@/feature/episode/types";
 import { CardCarousel } from "../CardCarousel";
+import PlayButton from "./PlayButton";
+import { RedLoader } from "./Loader";
 
 const CardComponent = ({ card }: { card: Podcast }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -25,6 +27,7 @@ const CardComponent = ({ card }: { card: Podcast }) => {
             className="object-cover"
           />
         </div>
+        {/* the animation section */}
         <div
           className={`absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent text-white p-4 transition-opacity duration-300 ${
             isHovered ? "opacity-0" : "opacity-100"
@@ -35,16 +38,24 @@ const CardComponent = ({ card }: { card: Podcast }) => {
           </h2>
         </div>
         <div
-          className="absolute bottom-0 left-0 w-full bg-gray-900/90 text-white transition-all duration-500 overflow-hidden"
+          className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent text-white transition-all duration-500 overflow-hidden"
           style={{
             height: isHovered
               ? `${contentRef.current?.scrollHeight || 0}px`
               : "0px",
           }}
         >
+          {/* PlayButton aligned to the right */}
+          <div className="w-full flex justify-end pr-4 pt-3">
+            <PlayButton />
+          </div>
+
+          {/* Text content (unchanged) */}
           <div ref={contentRef} className="p-4">
-            <h2 className="text-xl font-semibold mb-2">{card?.title}</h2>
-            <div className="text-sm text-gray-300 line-clamp-10">
+            <h2 className="text-xl font-bold mb-2 text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
+              {card?.title}
+            </h2>
+            <div className="text-sm text-gray-200 line-clamp-15">
               {card?.description}
             </div>
           </div>
@@ -57,9 +68,9 @@ const CardComponent = ({ card }: { card: Podcast }) => {
 const CustomCardAnimation = () => {
   const { data, isLoading } = useGetTrendingPodcast();
   const cardData = data?.data?.data?.slice(3);
-  if (isLoading) {
-    return <div className="flex items-center justify-center">Loading.....</div>;
-  }
+  <div className="h-screen">
+    <RedLoader />
+  </div>;
   return (
     <CardCarousel
       items={cardData ?? []}

@@ -9,9 +9,13 @@ import Link from "next/link";
 import PodcastControl from "./PodCastControl";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import SearchBar from "./SearchBar";
+import { PulsatingDot } from "./ui/PulsatingDot";
 
 const Navbar = () => {
-  const { isPlaying } = useSelector((state: RootState) => state.player);
+  const { currentEpisodeId } = useSelector((state: RootState) => state.player);
+  const showPodcastControl = !!currentEpisodeId;
+
   return (
     <>
       <div className="px-8 py-4 h-16 w-full flex justify-between items-center bg-white">
@@ -36,15 +40,7 @@ const Navbar = () => {
             <li>Contact Us</li>
             <li>Advertise</li>
           </ul>
-
-          <div className="flex items-center bg-gray-400 rounded-full pl-4 pr-2 py-2">
-            <SearchIcon height={20} width={20} color="#fff" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="bg-transparent outline-none ml-2 placeholder-white text-sm"
-            />
-          </div>
+          <SearchBar />
         </div>
       </div>
       {/* Top Section */}
@@ -62,7 +58,7 @@ const Navbar = () => {
             {/* Content centered vertically */}
             <div className="relative z-10 w-full h-full p-4 flex items-center">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
-                {isPlaying ? (
+                {showPodcastControl ? (
                   <PodcastControl />
                 ) : (
                   <div className="flex items-center gap-4">
@@ -71,9 +67,12 @@ const Navbar = () => {
                       <p className="text-sm font-semibold text-white">
                         Listen to ABR Live Radio
                       </p>
-                      <p className="text-xs text-[#9CCC65] font-semibold">
-                        ON AIR
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <PulsatingDot className="h-1 w-2" />
+                        <p className="text-xs text-[#9CCC65] font-semibold">
+                          ON AIR
+                        </p>
+                      </div>
                     </div>
                   </div>
                 )}

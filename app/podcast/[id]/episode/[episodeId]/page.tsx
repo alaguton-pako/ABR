@@ -10,15 +10,23 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useGetEpisodeById } from "@/feature/episode/api";
 import { formatDurationToMinutes, formatReadableDate } from "@/lib/helper";
+import { RedLoader } from "@/components/ui/Loader";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const page = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const { id, episodeId } = useParams();
   const parsedEpisodeId = episodeId ? parseInt(episodeId as string, 10) : null;
   const { data, isLoading } = useGetEpisodeById(parsedEpisodeId ?? 0);
   const episodeContent = data && data?.data;
   const podcastId = id;
   if (isLoading) {
-    return <div className="flex items-center justify-center">Loading.....</div>;
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
   }
   return (
     <div>
@@ -71,12 +79,41 @@ const page = () => {
                 <h2 className="text-2xl lg:text-3xl text-white font-bold">
                   {episodeContent?.title}
                 </h2>
-                <p className="text-sm text-gray-200 leading-relaxed max-w-[80%]">
-                  {episodeContent?.description}
-                  <span className="text-[#BCFFB6] font-medium ml-2">
-                    READ MORE
-                  </span>
-                </p>
+                <div className="flex flex-col gap-2 group">
+                  {/* Description Text */}
+                  <p
+                    className={cn(
+                      "text-sm text-gray-200 leading-relaxed max-w-[80%] transition-all duration-200",
+                      isExpanded ? "line-clamp-none" : "line-clamp-5"
+                    )}
+                  >
+                    {episodeContent?.description}
+                  </p>
+
+                  {/* Read More/Less Button */}
+                  {episodeContent &&
+                    episodeContent?.description?.length > 200 && (
+                      <button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        className="text-[#BCFFB6] font-medium hover:underline flex items-center gap-1 w-fit"
+                      >
+                        {isExpanded ? (
+                          <>
+                            <span
+                              className="cursor-pointer
+                          "
+                            >
+                              READ LESS
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="cursor-pointer">READ MORE</span>
+                          </>
+                        )}
+                      </button>
+                    )}
+                </div>
               </div>
               <div className="mt-20">
                 {episodeContent?.content_url && (

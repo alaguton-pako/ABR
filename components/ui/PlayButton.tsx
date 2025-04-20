@@ -16,7 +16,7 @@ const PlayButton = ({
 }: PlayButtonProps) => {
   return (
     <div
-      className={`bg-red-600 hover:bg-red-700 transition-colors duration-300 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer ${className}`}
+      className={`bg-red-700 hover:bg-red-600 transition-colors duration-300 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer ${className}`}
     >
       {isPlaying ? (
         <Pause width={width} height={height} color="#fff" />

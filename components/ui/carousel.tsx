@@ -174,61 +174,48 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
 
 function CarouselPrevious({
   className,
-  variant = "outline",
-  size = "icon",
   ...props
-}: React.ComponentProps<typeof Button>) {
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+}: React.ComponentProps<'div'>) {
+  const { scrollPrev, canScrollPrev } = useCarousel();
 
   return (
-    <Button
+    <div
       data-slot="carousel-previous"
-      variant={variant}
-      size={size}
       className={cn(
-        "absolute size-8",
-        orientation === "horizontal"
-          ? "top-1/2 -left-12 -translate-y-1/2"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+        "absolute size-8 flex items-center justify-center cursor-pointer",
+        "bg-white rounded-lg hover:bg-gray-100 transition-colors",
         className
       )}
-      disabled={!canScrollPrev}
       onClick={scrollPrev}
+      style={{ pointerEvents: canScrollPrev ? 'auto' : 'none', opacity: canScrollPrev ? 1 : 0.5 }}
       {...props}
     >
-      <CustomIcon src="/arrowLeft.png" alt="icon" height={10} />
+      <CustomIcon src="/arrowLeft.png" alt="Previous" height={10} />
       <span className="sr-only">Previous slide</span>
-    </Button>
+    </div>
   );
 }
-
 function CarouselNext({
   className,
-  variant = "outline",
-  size = "icon",
   ...props
-}: React.ComponentProps<typeof Button>) {
-  const { orientation, scrollNext, canScrollNext } = useCarousel();
+}: React.ComponentProps<'div'>) {
+  const { scrollNext, canScrollNext } = useCarousel();
 
   return (
-    <Button
+    <div
       data-slot="carousel-next"
-      variant={variant}
-      size={size}
       className={cn(
-        "absolute size-8",
-        orientation === "horizontal"
-          ? "top-1/2 -right-12 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+        "absolute size-8 flex items-center justify-centcaer cursor-pointer",
+        "bg-white rounded-lg hover:bg-gray-100 transition-colors",
         className
       )}
-      disabled={!canScrollNext}
       onClick={scrollNext}
+      style={{ pointerEvents: canScrollNext ? 'auto' : 'none', opacity: canScrollNext ? 1 : 0.5 }}
       {...props}
     >
-      <CustomIcon src="/arrowRight.png" alt="icon" height={10} />
+      <CustomIcon src="/arrowRight.png" alt="Next" height={10} />
       <span className="sr-only">Next slide</span>
-    </Button>
+    </div>
   );
 }
 

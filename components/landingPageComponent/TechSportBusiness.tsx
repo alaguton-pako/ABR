@@ -4,6 +4,8 @@ import CustomCardLayout from "../ui/CustomCardLayout";
 import Sections from "../ui/Sections";
 import { useGetTrendingPodcast } from "@/feature/podcast/api";
 import { Podcast } from "@/feature/episode/types";
+import { RedLoader } from "../ui/Loader";
+
 const TechSportBusiness = () => {
   const { data, isLoading } = useGetTrendingPodcast();
   const podcasts = data?.data?.data?.slice(1, 5);
@@ -15,7 +17,11 @@ const TechSportBusiness = () => {
     })) || [];
 
   if (isLoading) {
-    return <div className="flex justify-center items-center">loading....</div>;
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
   }
   return (
     <CustomCardLayout>

@@ -30,7 +30,7 @@ function PaginationContent({
 }
 
 function PaginationItem({ ...props }: React.ComponentProps<"li">) {
-  return <li data-slot="pagination-item" {...props} />;
+  return <li data-slot="pagination-item" className="hover:cursor-pointer" {...props} />;
 }
 
 type PaginationLinkProps = {
@@ -45,7 +45,7 @@ function PaginationLink({
   ...props
 }: PaginationLinkProps) {
   return (
-    <a
+    <span
       aria-current={isActive ? "page" : undefined}
       data-slot="pagination-link"
       data-active={isActive}
@@ -54,7 +54,7 @@ function PaginationLink({
           variant: "secondary", // or "outline"
           size,
         }),
-        isActive ? "bg-[#2C2C2C] text-white" : "",
+        isActive ? "bg-[#2C2C2C] text-white hover:text-[#2C2C2C]" : "",
         className
       )}
       {...props}

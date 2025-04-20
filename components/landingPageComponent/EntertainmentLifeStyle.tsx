@@ -4,6 +4,9 @@ import Sections from "../ui/Sections";
 import CustomCardLayout from "../ui/CustomCardLayout";
 import { useGetTrendingPodcast } from "@/feature/podcast/api";
 import { Podcast } from "@/feature/episode/types";
+import { RedLoader } from "../ui/Loader";
+
+
 const EntertainmentLifestyle = () => {
   const { data, isLoading } = useGetTrendingPodcast();
   const podcasts = data?.data?.data?.slice(6, 10);
@@ -15,12 +18,19 @@ const EntertainmentLifestyle = () => {
     })) || [];
 
   if (isLoading) {
-    return <div className="flex justify-center items-center">loading....</div>;
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
   }
   return (
     <CustomCardLayout>
       <section>
-        <Sections sectionTitle="Entertainment & Lifestlye" cardData={cardData} />
+        <Sections
+          sectionTitle="Entertainment & Lifestlye"
+          cardData={cardData}
+        />
       </section>
     </CustomCardLayout>
   );

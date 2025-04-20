@@ -46,7 +46,7 @@ const Footer = () => {
                   key={link.name}
                   href={link.href}
                   className={`text-xs uppercase tracking-wide font-semibold text-[#C9C9C9] hover:text-gray-300 transition-colors ${
-                    index !== 0 ? "border-l border-white pl-4" : ""
+                    index !== 0 ? "border-l border-white pl-8" : ""
                   }`}
                 >
                   {link.name}

@@ -4,7 +4,7 @@ import CustomCardLayout from "../ui/CustomCardLayout";
 import Sections from "../ui/Sections";
 import { useGetTrendingPodcast } from "@/feature/podcast/api";
 import { Podcast } from "@/feature/episode/types";
-
+import { RedLoader } from "../ui/Loader";
 
 const CategoryListening = () => {
   const { data, isLoading } = useGetTrendingPodcast();
@@ -17,7 +17,11 @@ const CategoryListening = () => {
     })) || [];
 
   if (isLoading) {
-    return <div className="flex justify-center items-center">loading....</div>;
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
   }
   return (
     <CustomCardLayout>

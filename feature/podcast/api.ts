@@ -56,7 +56,7 @@ export const useGetPodcastById = (id: number | string) =>
   });
 
 export const useGetSearchPodcasts = (query: string) =>
-  useQuery({
+  useQuery<PodcastResponse>({
     queryKey: ["searchPodcasts", query],
     queryFn: async () => {
       const { data } = await axios.get(

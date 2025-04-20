@@ -6,6 +6,7 @@ import PlayButton from "../ui/PlayButton";
 import PodcastCard from "../ui/PodcastCard";
 import { useGetLatestEpisodes } from "@/feature/episode/api";
 import Link from "next/link";
+import { RedLoader } from "../ui/Loader";
 
 const EditorsPickSection = () => {
   const { data, isLoading } = useGetLatestEpisodes(1, 3);
@@ -13,9 +14,9 @@ const EditorsPickSection = () => {
   const rightCardData = episodes?.slice(1, 3);
   const leftCardData = episodes && episodes[0];
   if (isLoading) {
-    return <div className="flex items-center justify-center">Loading.....</div>;
+    return <RedLoader />;
   }
-  
+
   return (
     <>
       <div className="bg-[#F6F6F6]">
@@ -39,7 +40,9 @@ const EditorsPickSection = () => {
               />
               <div className="absolute bottom-0 left-0 w-full h-[20%] bg-black/60 text-white flex items-center px-4 rounded-b-md">
                 <div className="flex items-center gap-2">
-                  <Link href={`/podcast/${leftCardData?.podcast_id}/episode/${leftCardData?.id}`}>
+                  <Link
+                    href={`/podcast/${leftCardData?.podcast_id}/episode/${leftCardData?.id}`}
+                  >
                     <PlayButton />
                   </Link>
                   <h2 className="text-base md:text-lg font-semibold truncate">

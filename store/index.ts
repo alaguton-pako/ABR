@@ -1,27 +1,39 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // <--- this uses localStorage
+
+import createSessionStorage from "redux-persist/lib/storage/session";
 import playerReducer from "./playerSlice";
+import { combineReducers } from "redux"; // Add this import
+
+
+const rootReducer = combineReducers({
+  player: playerReducer
+});
 
 const persistConfig = {
-  key: "root",
-  storage, // This is `localStorage` by default
-  whitelist: ["player"], // Persist only the player slice
+  key: 'podcastPlayerSession', // Different key to avoid conflicts
+  storage: createSessionStorage, // <-- Use sessionStorage instead
+  whitelist: ['player'],
+  debug: true
 };
 
-const persistedReducer = persistReducer(persistConfig, playerReducer);
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    player: persistedReducer,
-  },
+  reducer: persistedReducer, // Use the persisted reducer directly
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Required for redux-persist
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+      },
     }),
 });
 
-export const persistor = persistStore(store);
+// 4. Enhanced persistor with debug callbacks
+export const persistor = persistStore(store, null, () => {
+  console.log('Rehydration complete');
+});
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

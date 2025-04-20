@@ -2,25 +2,30 @@ import React from "react";
 import Image from "next/image";
 import CustomIcon from "../ui/CustomIcon";
 import PlayButton from "../ui/PlayButton";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import Link from "next/link";
 import { useGetPodcastEpisodes } from "@/feature/podcast/api";
 import { formatReadableDate } from "@/lib/helper";
+import { useState } from "react";
+import { PaginationControls } from "../ui/PaginationsControl";
+import { RedLoader } from "../ui/Loader";
 
 const Content = ({ id }: { id?: string }) => {
-  const currentPage = 1;
-  const { data, isLoading } = useGetPodcastEpisodes(id ?? 0, currentPage, 10);
-  const episodes = data && data?.data?.data;
+  const [currentPage, setCurrentPage] = useState(1);
+  const perPage = 5;
+  const { data, isLoading } = useGetPodcastEpisodes(
+    id ?? "",
+    currentPage,
+    perPage
+  );
+  console.log(data);
+  const episodes = data?.data?.data;
+  const paginationData = data?.data;
   if (isLoading) {
-    return <div className="flex items-center justify-center">Loading.....</div>;
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
   }
   return (
     <div className="p-8">
@@ -45,32 +50,51 @@ const Content = ({ id }: { id?: string }) => {
                   >
                     <div
                       key={episode.id}
-                      className="flex flex-col md:flex-row gap-6 border-y border-[#DCDCDC] py-8"
+                      className="flex flex-col md:flex-row gap-6 border-y border-[#DCDCDC] py-8 group hover:bg-gray-50 transition-colors duration-200"
                     >
-                      {/* Fixed Size Image Container */}
+                      {/* Image Container with Hover Overlay */}
                       <div className="flex-shrink-0 w-full md:w-[150px] h-[150px] relative">
                         <Image
                           src={episode?.picture_url}
                           alt={`Episode: ${episode?.title}`}
                           fill
-                          className="rounded-xs object-cover"
+                          className="rounded-xs object-cover group-hover:brightness-75 transition-all duration-300"
                         />
+                        {/* Hover Overlay Play Icon */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <PlayButton
+                            height={40}
+                            width={40}
+                            className="text-red-500 bg-white/90 rounded-full p-2 shadow-lg"
+                          />
+                        </div>
                       </div>
+
                       {/* Episode Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col gap-3">
                           <h1 className="text-sm text-gray-400 font-semibold">
                             {formatReadableDate(episode?.published_at)}
                           </h1>
-                          <h2 className="text-lg font-bold">
+
+                          {/* Title with Hover Effects */}
+                          <h2 className="text-lg font-bold group-hover:text-red-500 group-hover:underline transition-colors duration-200">
                             {episode?.title}
                           </h2>
+
                           <p className="text-sm text-gray-600 line-clamp-3">
                             {episode?.description}
                           </p>
 
                           <div className="w-full flex items-center gap-4 mt-2">
-                            <PlayButton height={10} width={10} />
+                            {/* Play Button with Hover Scale */}
+                            <PlayButton
+                              height={18}
+                              width={18}
+                              className="w-[30px] h-[30px] group-hover:scale-110 transition-transform"
+                            />
+
+                            {/* Action Buttons */}
                             <div className="flex items-center gap-3">
                               <button className="h-8 w-8 rounded-full flex justify-center items-center bg-gray-100 hover:bg-gray-200 transition-colors">
                                 <CustomIcon
@@ -103,32 +127,16 @@ const Content = ({ id }: { id?: string }) => {
                 ))}
               </div>
               <div className="flex justify-self-start mt-10">
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious href="#" />
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">2</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">3</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">4</PaginationLink>
-                    </PaginationItem>
-
-                    <PaginationItem>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationNext href="#" />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
+                {/* Pagination Controls */}
+                {paginationData && (
+                  <div className="flex justify-start mt-10">
+                    <PaginationControls
+                      currentPage={currentPage}
+                      totalPages={paginationData.last_page}
+                      onPageChange={setCurrentPage}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -1,4 +1,3 @@
-// components/shared/CardCarousel.tsx
 "use client";
 import React from "react";
 import {
@@ -31,9 +30,10 @@ export const CardCarousel = <T,>({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="absolute left-[97%] top-1/2 -translate-y-1/2 flex gap-2">
-          <CarouselPrevious className="relative static transform-none" />
-          <CarouselNext className="relative static transform-none" />
+        {/* Updated button container with white background */}
+        <div className="absolute left-[97%] top-1/2 -translate-y-1/2 flex justify-center gap-2 bg-white rounded-lg p-2 shadow-sm">
+          <CarouselPrevious className="static transform-none bg-white rounded-lg text-black hover:bg-gray-100" />
+          <CarouselNext className="static transform-none  rounded-lg text-black hover:bg-gray-100" />
         </div>
       </Carousel>
     </div>

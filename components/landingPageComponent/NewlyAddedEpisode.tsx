@@ -5,13 +5,14 @@ import { CustomCard } from "../ui/CustomCard";
 import { useGetLatestEpisodes } from "@/feature/episode/api";
 import { formatReadableDate } from "@/lib/helper";
 import { CardCarousel } from "../CardCarousel";
+import { RedLoader } from "../ui/Loader";
 
 const NewlyAddedEpisode = () => {
   const { data, isLoading } = useGetLatestEpisodes(5, 11);
   const episodes = data && data?.data?.data?.slice(5);
-  if (isLoading) {
-    return <div className="flex justify-center items-center">loading....</div>;
-  }
+  <div className="h-screen">
+    <RedLoader />
+  </div>;
   return (
     <>
       <CustomCardLayout>

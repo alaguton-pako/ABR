@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux"; // Import useDispatch and useSelector
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Slider } from "@/components/ui/slider";
 import PlayButton from "./PlayButton";
 import CustomIcon from "@/components/ui/CustomIcon";
-import { Volume, VolumeX } from "lucide-react";
+import { VolumeX } from "lucide-react";
+import { Volume2 } from "lucide-react";
 import {
   playEpisode,
   pauseEpisode,
   setCurrentTime,
   toggleMute,
-  setDuration,
 } from "@/store/playerSlice";
-import { RootState } from "@/store"; // Import RootState
+import { RootState } from "@/store";
 
 interface PlayComponentProps {
   contentUrl: string;
@@ -26,47 +26,36 @@ const PlayComponent: React.FC<PlayComponentProps> = ({
   podcastId,
   episodeId,
 }) => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
   const dispatch = useDispatch();
+  const { isPlaying, currentTime, duration, isMuted, currentEpisodeId } =
+    useSelector((state: RootState) => state.player);
 
-  // Use Redux state
-  const { isPlaying, currentTime, duration, isMuted } = useSelector(
-    (state: RootState) => state.player
-  );
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleTimeUpdate = () => {
-      dispatch(setCurrentTime(audio.currentTime)); // Always sync Redux with audio
-    };
-
-    const handleLoadedMetadata = () => {
-      if (audio.duration !== duration) {
-        dispatch(setDuration(audio.duration)); // Set initial duration
-      }
-    };
-
-    audio.addEventListener("timeupdate", handleTimeUpdate);
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-
-    return () => {
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-    };
-  }, [currentTime, duration, dispatch]);
+  // Only show playing state if this is the active episode AND isPlaying
+  const isActiveEpisode = currentEpisodeId === episodeId.toString();
+  const showAsPlaying = isPlaying && isActiveEpisode;
 
   const togglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    // Early return if no episode is selected
+    if (!contentUrl) return;
 
-
-    if (isPlaying) {
-      dispatch(pauseEpisode()); // Dispatch pause action
-      audio.pause();
+    if (isActiveEpisode) {
+      // Toggle play/pause for current episode
+      if (isPlaying) {
+        dispatch(pauseEpisode());
+      } else {
+        dispatch(
+          playEpisode({
+            episodeId: episodeId.toString(),
+            title: podcastTitle,
+            url: contentUrl,
+            podcastId: podcastId.toString(),
+          })
+        );
+      }
     } else {
+      // For new episode, force pause state first
+      dispatch(pauseEpisode());
+      // Then start playing new episode
       dispatch(
         playEpisode({
           episodeId: episodeId.toString(),
@@ -75,17 +64,13 @@ const PlayComponent: React.FC<PlayComponentProps> = ({
           podcastId: podcastId.toString(),
         })
       );
-      audio.play();
     }
   };
 
   const handleSliderChange = (value: number[]) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
+    if (!isActiveEpisode) return; // Prevent seeking on inactive episodes
     const newTime = (value[0] / 100) * duration;
-    audio.currentTime = newTime;
-    dispatch(setCurrentTime(newTime)); // Update the current time in Redux
+    dispatch(setCurrentTime(newTime));
   };
 
   const formatTime = (secs: number) => {
@@ -95,73 +80,59 @@ const PlayComponent: React.FC<PlayComponentProps> = ({
   };
 
   const rewind = (seconds: number) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.currentTime = Math.max(audio.currentTime - seconds, 0); // Prevent negative time
-    dispatch(setCurrentTime(audio.currentTime)); // Sync with Redux
+    if (!isActiveEpisode) return;
+    const newTime = Math.max(currentTime - seconds, 0);
+    dispatch(setCurrentTime(newTime));
   };
 
   const fastForward = (seconds: number) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.currentTime = Math.min(audio.currentTime + seconds, duration); // Prevent exceeding duration
-    dispatch(setCurrentTime(audio.currentTime)); // Sync with Redux
+    if (!isActiveEpisode) return;
+    const newTime = Math.min(currentTime + seconds, duration);
+    dispatch(setCurrentTime(newTime));
   };
 
   const toggleMuteHandler = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    audio.muted = !isMuted;
-    dispatch(toggleMute()); // Dispatch toggle mute action
+    dispatch(toggleMute());
   };
 
   return (
     <div className="w-full space-y-2">
-      <audio ref={audioRef} src={contentUrl} preload="metadata" />
-
-      {/* Time indicators and slider */}
       <div className="flex items-center justify-between w-full">
-        <span className="text-xs text-white">{formatTime(currentTime)}</span>
+        <span className="text-xs text-white">
+          {isActiveEpisode ? formatTime(currentTime) : "0:00"}
+        </span>
         <Slider
-          value={[(currentTime / duration) * 100 || 0]}
+          value={isActiveEpisode ? [(currentTime / duration) * 100 || 0] : [0]}
           max={100}
           step={1}
           onValueChange={handleSliderChange}
           className="w-[90%] mx-auto"
         />
-        <span className="text-xs text-white">{formatTime(duration)}</span>
+        <span className="text-xs text-white">
+          {isActiveEpisode ? formatTime(duration) : "0:00"}
+        </span>
         <div className="ml-2">
-          {/* Mute/Unmute button */}
           <div onClick={toggleMuteHandler} className="ml-1">
             {isMuted ? (
-              <VolumeX size={24} color="#ffff" />
+              <VolumeX size={24} color="#ffff" className="cursor-pointer"/>
             ) : (
-              <Volume size={24} color="#ffff" />
+              <Volume2 size={24} color="#ffff" className="cursor-pointer" />
             )}
           </div>
         </div>
       </div>
 
-      {/* Control buttons */}
       <div className="mt-14">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-4">
-            {/* Rewind button (10 seconds backward) */}
-            <div
-              onClick={() => rewind(10)} // Rewind 10 seconds
-              className="cursor-pointer"
-            >
+            <div onClick={() => rewind(10)} className="cursor-pointer">
               <CustomIcon src="/rewindLeft.png" alt="Rewind icon" />
             </div>
             <button onClick={togglePlay}>
-              <PlayButton isPlaying={isPlaying} />
+              <PlayButton isPlaying={showAsPlaying} />{" "}
+              {/* Fixed to use showAsPlaying */}
             </button>
-            {/* Forward button (10 seconds forward) */}
-            <div
-              onClick={() => fastForward(10)} // Fast forward 10 seconds
-              className="cursor-pointer"
-            >
+            <div onClick={() => fastForward(10)} className="cursor-pointer">
               <CustomIcon src="/rewindRight.png" alt="Forward icon" />
             </div>
           </div>
