@@ -87,7 +87,7 @@ const Page = () => {
             {/* Share Icon - Aligned to top */}
             <div className="flex md:items-start justify-end md:justify-normal">
               <CustomIcon
-                src="/vector.png"
+                src="/Vector.png"
                 alt="share icon"
                 height={24}
                 width={24}

@@ -89,7 +89,7 @@ const Content = ({ id }: { id?: string }) => {
                         {/* Action Buttons */}
                         <div className="flex items-center gap-2 md:gap-3">
                           <button className="h-7 w-7 md:h-8 md:w-8 rounded-full flex justify-center items-center bg-gray-100 hover:bg-gray-200 transition-colors">
-                            <CustomIcon src="/vector2.png" alt="Share icon" />
+                            <CustomIcon src="/Vector2.png" alt="icon" />
                           </button>
                           <button className="h-7 w-7 md:h-9 md:w-9 rounded-full flex justify-center items-center bg-gray-100 hover:bg-gray-200 transition-colors">
                             <CustomIcon
