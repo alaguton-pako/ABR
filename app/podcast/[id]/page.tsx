@@ -97,9 +97,9 @@ const page = () => {
           </div>
         </div>
       </div>
-      <CustomCardLayout>
+      <div className="w-[90%] mx-auto">
         <Content id={String(id)} />
-      </CustomCardLayout>
+      </div>
     </>
   );
 };

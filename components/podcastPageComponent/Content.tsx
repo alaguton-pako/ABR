@@ -31,7 +31,7 @@ const Content = ({ id }: { id?: string }) => {
     <div className="grid grid-cols-12 gap-8 p-4">
       {/* Main Content Column */}
       <div className="col-span-12 md:col-span-10">
-        <div className="">
+        <div className="w-full md:w-4/5 ">
           <h1 className="text-sm py-6">
             <span className="text-gray-500 font-semibold">ALL EPISODES </span>(
             {episodes?.length} AVAILABLE)
