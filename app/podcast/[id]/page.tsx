@@ -21,9 +21,9 @@ const page = () => {
   }
   return (
     <>
-      <div className="min-h-[400px] pt-[180px] w-full bg-gradient-to-br from-[#2B3221] to-[#817e7e] p-6 md:p-14">
+      <div className="min-h-[400px] pt-[180px] w-full bg-gradient-to-br from-[#2B3221] to-[#817e7e] p-6 md:p-12">
         {/* Main container */}
-        <div className="flex flex-col md:flex-row gap-6 h-full max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-6 h-full max-w-[95%] mx-auto">
           {/* Left Section - Image */}
           <div className="relative aspect-square w-full max-w-[300px] md:w-[300px] md:h-[300px] flex-shrink-0">
             <Image
@@ -47,7 +47,7 @@ const page = () => {
                 <h2 className="text-xl md:text-2xl lg:text-3xl text-white font-bold">
                   {podcastContent?.title}
                 </h2>
-                <p className="text-sm md:text-base text-white h-[70%] overflow-auto">
+                <p className="text-sm md:text-base text-white h-[50%] overflow-auto">
                   {podcastContent?.description}
                 </p>
               </div>
@@ -97,7 +97,7 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div className="w-[90%] mx-auto">
+      <div className="">
         <Content id={String(id)} />
       </div>
     </>

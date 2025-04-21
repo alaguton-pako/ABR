@@ -35,12 +35,12 @@ const PodcastControl: React.FC = () => {
 
   return (
     <>
-      <Link href={`/podcast/${podcastId}/episode/${currentEpisodeId}`} >
-        <div className="flex items-center gap-4">
+      <Link href={`/podcast/${podcastId}/episode/${currentEpisodeId}`}>
+        <div className="flex items-center gap-2">
           <div onClick={togglePlayPause} className="cursor-pointer">
             <PlayButton isPlaying={isPlaying && !!currentEpisodeId} />
           </div>
-          <span className="text-white text-sm">
+          <span className="text-white text-xs line-clamp-1">
             {currentPodcastTitle || "No Podcast Selected"}
           </span>
         </div>

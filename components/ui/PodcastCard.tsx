@@ -34,12 +34,12 @@ const PodcastCard = ({
 
       {/* Text content */}
       <div className="bg-white text-[#000] h-2/6 py-4 px-6">
-        <div className="h-full flex flex-col justify-between items-center">
-          <h1 className="text-center text-sm md:text-base line-clamp-1">{title}</h1>
+        <div className="h-full flex flex-col justify-between items-center p-1">
+          <h1 className="text-center text-xs xl:text-sm line-clamp-3">{title}</h1>
           <div className="flex items-center gap-4 ">
-            <p className="text-xs md:text-base">{formatReadableDate(date)}</p>
+            <p className="text-xs xl:text-sm">{formatReadableDate(date)}</p>
             <Separator orientation="vertical" />
-            <p className="text-xs md:text-base">{formatDurationToMinutes(duration)}</p>
+            <p className="text-xs xl:text-sm">{formatDurationToMinutes(duration)}</p>
           </div>
         </div>
       </div>

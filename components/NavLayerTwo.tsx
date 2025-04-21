@@ -52,7 +52,7 @@ const NavLayerTwo = () => {
             </div>
           </div>
           {/* Right Section */}
-          <div className="col-span-12 bg-black md:col-span-7 w-full md:bg-inherit">
+          <div className="col-span-12 bg-black md:col-span-7  w-full md:bg-inherit">
             <div className="p-3 flex ml-1 md:p-0 gap-8 xl:ml-[18rem] ">
               <div className="w-full flex flex-col justify-center gap-2 md:flex md:flex-row items-center md:gap-6">
                 <div className="hidden md:block h-5 w-[2px] bg-white"></div>

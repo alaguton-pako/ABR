@@ -28,7 +28,7 @@ const Content = ({ id }: { id?: string }) => {
     );
   }
   return (
-    <div className="grid grid-cols-12 gap-4 md:gap-8 p-4 max-w-7xl mx-auto">
+    <div className="grid grid-cols-12 gap-4 md:gap-8 max-w-[95%] mx-auto  p-6 md:p-12">
       {/* Main Content Column */}
       <div className="col-span-12 lg:col-span-8 xl:col-span-9">
         <div className="w-full lg:w-5/6">
@@ -38,27 +38,27 @@ const Content = ({ id }: { id?: string }) => {
           </h1>
 
           {/* Episodes List */}
-          <div className="space-y-4">
+          <div className="">
             {episodes?.map((episode) => (
               <Link
                 key={episode.id}
                 href={`/podcast/${id}/episode/${episode?.id}`}
                 className="block"
               >
-                <div className="flex flex-col sm:flex-row gap-4 md:gap-6 border-y border-[#DCDCDC] py-6 group hover:bg-gray-50 transition-colors duration-200">
+                <div className="flex flex-col sm:flex-row gap-4 md:gap-6 border-y border-[#DCDCDC] py-6 group">
                   {/* Image Container */}
-                  <div className="flex-shrink-0 w-full sm:w-[120px] md:w-[150px] aspect-square relative">
+                  <div className="flex-shrink-0 w-full md:w-[150px] h-[150px] relative">
                     <Image
-                      src={episode?.picture_url || "/placeholder-episode.png"}
+                      src={episode?.picture_url}
                       alt={`Episode: ${episode?.title}`}
                       fill
                       className="rounded-xs object-cover group-hover:brightness-75 transition-all duration-300"
                     />
-                    {/* Hover Play Icon */}
+                    {/* Hover Overlay Play Icon */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <PlayButton
-                        height={32}
-                        width={32}
+                        height={40}
+                        width={40}
                         className="text-red-500 bg-white/90 rounded-full p-2 shadow-lg"
                       />
                     </div>
@@ -75,7 +75,7 @@ const Content = ({ id }: { id?: string }) => {
                         {episode?.title}
                       </h2>
 
-                      <p className="text-xs md:text-sm text-gray-600 line-clamp-2 md:line-clamp-3">
+                      <p className="text-xs md:text-sm  line-clamp-2 md:line-clamp-3">
                         {episode?.description}
                       </p>
 
@@ -129,23 +129,30 @@ const Content = ({ id }: { id?: string }) => {
         </div>
       </div>
 
-      {/* Sidebar Ads - Hidden on mobile */}
+      {/* Sidebar Ads - Proper image fitting */}
       <div className="hidden lg:block col-span-4 xl:col-span-3">
         <div className="flex flex-col gap-4 sticky top-4">
+          {/* First Ad - Maintains aspect ratio */}
           <div className="relative aspect-[3/4] w-full">
             <Image
               src="/advert8.png"
-              alt="Ad 1"
+              alt="Premium Podcast Sponsorship"
               fill
-              className="object-cover rounded-lg"
+              className="object-contain" // Changed to contain
+              sizes="(max-width: 1280px) 200px, 250px"
             />
           </div>
-          <div className="relative aspect-[3/4] w-full">
+
+          {/* Second Ad - Custom aspect ratio */}
+          <div className="relative aspect-[5/4] w-full ">
+            {" "}
             <Image
               src="/advert2.png"
-              alt="Ad 2"
+              alt="New Podcast App Launch"
               fill
-              className="object-cover rounded-lg"
+              className="object-contain mx-auto" // Centered containment
+              sizes="(max-width: 1280px) 200px, 250px"
+              style={{ maxWidth: "90%" }} // Prevents over-stretching
             />
           </div>
         </div>
