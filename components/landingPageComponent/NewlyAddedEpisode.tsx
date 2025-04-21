@@ -10,9 +10,13 @@ import { RedLoader } from "../ui/Loader";
 const NewlyAddedEpisode = () => {
   const { data, isLoading } = useGetLatestEpisodes(5, 11);
   const episodes = data && data?.data?.data?.slice(5);
-  <div className="h-screen">
-    <RedLoader />
-  </div>;
+  if (isLoading) {
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
+  }
   return (
     <>
       <CustomCardLayout>

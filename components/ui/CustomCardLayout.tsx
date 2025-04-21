@@ -6,7 +6,7 @@ type CustomCardLayoutProps = {
 
 const CustomCardLayout = ({ children }: CustomCardLayoutProps) => {
   return (
-    <div className="w-[90%] mx-auto flex flex-col gap-6 p-4">
+    <div className="w-full xl:w-[90%] mx-auto flex flex-col gap-6 p-4">
       {children}
     </div>
   );

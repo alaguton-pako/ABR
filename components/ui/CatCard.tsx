@@ -29,7 +29,7 @@ export const CatCard: React.FC<CustomCardProps> = ({
 }) => {
   return (
     <Link href={`/podcast/${podcastId}/episode/${episodeId}`}>
-    <div className={`w-[247px] h-[500px] rounded-xs overflow-hidden ${className} group relative`}>
+    <div className={`w-full h-[500px] rounded-xs overflow-hidden ${className} group relative`}>
       {/* Top Image with Hover Overlay */}
       <div className="h-3/6 relative">
         <Image
@@ -37,7 +37,7 @@ export const CatCard: React.FC<CustomCardProps> = ({
           alt={title}
           layout="fill"
           objectFit="cover"
-          className="rounded-t-xs group-hover:brightness-5 transition-all duration-300"
+          className="rounded-t-xs group-hover:brightness-50 transition-all duration-300"
         />
         {/* Hover Overlay Icon */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

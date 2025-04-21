@@ -18,7 +18,7 @@ const Sections: React.FC<SectionsProps> = ({ sectionTitle, cardData }) => {
   return (
     <div className="w-full">
       {/* Section Header */}
-      <div className="flex justify-between mb-6">
+      <div className="flex flex-wrap gap-2 justify-between mb-6">
         <div className="flex items-center gap-1">
           <div className="h-3 w-[2px] bg-[#5A5A5A]"></div>
           <h3 className="text-[#CC0001] text-md font-semibold">
@@ -29,7 +29,7 @@ const Sections: React.FC<SectionsProps> = ({ sectionTitle, cardData }) => {
       </div>
 
       {/* Cards */}
-      <div className="flex flex-wrap gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {cardData?.map((item) => (
           <CustomCardTwo
             key={item?.id}

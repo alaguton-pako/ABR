@@ -30,7 +30,8 @@ const page = () => {
   }
   return (
     <div>
-      <div className="relative h-[100vh] w-full bg-gradient-to-br from-[#2B3221]/90 to-[#817e7e]/20 p-8 overflow-hidden">
+      <div className="relative w-full min-h-[100vh] pt-[150px] p-4 md:p-8 overflow-hidden">
+        {/* Background Image */}
         <div className="absolute inset-0 -z-10">
           <Image
             src={episodeContent?.picture_url ?? "/advert6.png"}
@@ -41,95 +42,89 @@ const page = () => {
             priority
           />
         </div>
-        {/* Strong Gradient Overlay */}
+
+        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#2B3221]/95 to-[#817e7e]/80 -z-10" />
+
         {/* Back Button */}
-        <Link href={`/podcast/${podcastId}`}>
-          <div className="flex items-center text-white ml-2 mb-6 cursor-pointer">
-            <ChevronLeft />
-            <span className="font-medium">Back to podcast</span>
-          </div>
-        </Link>
+        <div className="container mx-auto">
+          <Link href={`/podcast/${podcastId}`}>
+            <div className="flex items-center text-white mb-4 md:mb-6 cursor-pointer">
+              <ChevronLeft />
+              <span className="font-medium">Back to podcast</span>
+            </div>
+          </Link>
+        </div>
 
         {/* Content Container */}
-        <div className="flex p-4 h-full">
-          <div className="flex items-start gap-8 w-full">
-            {/* Fixed Size Image Container */}
-            <div className="flex-shrink-0 relative w-[150px] h-[150px]">
-              <Image
-                src={episodeContent?.picture_url || "/advert6.png"}
-                alt="Podcast Image"
-                fill
-                className="rounded-xs object-cover"
-              />
+        <div className="container mx-auto flex flex-col md:flex-row gap-6 md:gap-8 p-4">
+          {/* Image Container - Responsive sizing */}
+          <div className="flex-shrink-0 relative w-full max-w-[200px] h-[150px] md:w-[150px] md:h-[150px] mx-auto md:mx-0">
+            <Image
+              src={episodeContent?.picture_url || "/advert6.png"}
+              alt="Podcast Image"
+              fill
+              className="rounded-xs object-cover"
+            />
+          </div>
+
+          {/* Content Area */}
+          <div className="flex-1 overflow-y-auto max-h-[calc(100vh-200px)] md:max-h-[calc(100vh-180px)] pr-2">
+            <div className="flex flex-col text-sm gap-4">
+              {/* Date and Duration */}
+              <div className="flex items-center flex-wrap gap-2">
+                <h1 className="text-gray-300 font-semibold">
+                  {formatReadableDate(episodeContent?.published_at ?? "")}
+                </h1>
+                <div className="text-sm flex items-center text-gray-300">
+                  <Dot size={40} />
+                  {formatDurationToMinutes(episodeContent?.duration ?? 0)}
+                </div>
+              </div>
+
+              {/* Title */}
+              <h2 className="text-xl md:text-2xl lg:text-3xl text-white font-bold">
+                {episodeContent?.title}
+              </h2>
+
+              {/* Description with Read More */}
+              <div className="flex flex-col gap-2 group">
+                <p
+                  className={cn(
+                    "text-sm text-gray-200 leading-relaxed transition-all duration-200",
+                    isExpanded ? "line-clamp-none" : "line-clamp-5"
+                  )}
+                >
+                  {episodeContent?.description}
+                </p>
+
+                {episodeContent &&
+                  episodeContent?.description?.length > 200 && (
+                    <button
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className="text-[#BCFFB6] font-medium hover:underline flex items-center gap-1 w-fit"
+                    >
+                      {isExpanded ? "READ LESS" : "READ MORE"}
+                    </button>
+                  )}
+              </div>
             </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto max-h-[80vh] pr-4">
-              <div className="flex flex-col text-sm gap-4">
-                <div className="flex items-center">
-                  <h1 className=" text-gray-300 font-semibold">
-                    {formatReadableDate(episodeContent?.published_at ?? "")}
-                  </h1>
-                  <div className="text-sm flex items-center text-gray-300">
-                    <Dot size={40} />
-                    {formatDurationToMinutes(episodeContent?.duration ?? 0)}
-                  </div>
-                </div>
-                <h2 className="text-2xl lg:text-3xl text-white font-bold">
-                  {episodeContent?.title}
-                </h2>
-                <div className="flex flex-col gap-2 group">
-                  {/* Description Text */}
-                  <p
-                    className={cn(
-                      "text-sm text-gray-200 leading-relaxed max-w-[80%] transition-all duration-200",
-                      isExpanded ? "line-clamp-none" : "line-clamp-5"
-                    )}
-                  >
-                    {episodeContent?.description}
-                  </p>
-
-                  {/* Read More/Less Button */}
-                  {episodeContent &&
-                    episodeContent?.description?.length > 200 && (
-                      <button
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        className="text-[#BCFFB6] font-medium hover:underline flex items-center gap-1 w-fit"
-                      >
-                        {isExpanded ? (
-                          <>
-                            <span
-                              className="cursor-pointer
-                          "
-                            >
-                              READ LESS
-                            </span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="cursor-pointer">READ MORE</span>
-                          </>
-                        )}
-                      </button>
-                    )}
-                </div>
-              </div>
-              <div className="mt-20">
-                {episodeContent?.content_url && (
-                  <PlayComponent
-                    contentUrl={episodeContent.content_url}
-                    podcastId={episodeContent?.podcast_id}
-                    episodeId={episodeContent?.id}
-                    podcastTitle={episodeContent?.title}
-                  />
-                )}
-              </div>
+            {/* Player Component - Positioned properly */}
+            <div className="mt-8 md:mt-12">
+              {episodeContent?.content_url && (
+                <PlayComponent
+                  contentUrl={episodeContent.content_url}
+                  podcastId={episodeContent?.podcast_id}
+                  episodeId={episodeContent?.id}
+                  podcastTitle={episodeContent?.title}
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-4 mb-32">
+      <div className="mt-14 mb-32">
         <Content id={String(podcastId)} />
       </div>
       <NewsLetter />

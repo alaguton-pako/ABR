@@ -68,9 +68,13 @@ const CardComponent = ({ card }: { card: Podcast }) => {
 const CustomCardAnimation = () => {
   const { data, isLoading } = useGetTrendingPodcast();
   const cardData = data?.data?.data?.slice(3);
-  <div className="h-screen">
-    <RedLoader />
-  </div>;
+  if (isLoading) {
+    return (
+      <div className="h-screen">
+        <RedLoader />
+      </div>
+    );
+  }
   return (
     <CardCarousel
       items={cardData ?? []}

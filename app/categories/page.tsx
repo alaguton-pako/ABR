@@ -60,59 +60,65 @@ const page = () => {
   return (
     <>
       <CustomCardLayout>
-        <div className="mt-20">
-          <h1 className="text-lg text-[#5A5A5A] font-bold">ALL PODCASTS</h1>
-        </div>
-        <Separator />
-        <div className="flex items-center gap-6 text-sm">
-          <div className="flex items-center gap-2">
-            <span>
-              Sort by : <span className="font-medium">Popular</span>
-            </span>
-            <Ellipsis fontWeight={600} />
+        <div className="pt-[120px] md:pt-0 p-4">
+          <div className="mt-4">
+            <h1 className="text-lg text-[#5A5A5A] font-bold">ALL PODCASTS</h1>
           </div>
-          <div className="h-[18px] bg-gray-400 w-[2px]"></div>
           <div>
+            <Separator className="my-8" />
+          </div>
+          <div className="flex flex-wrap items-center gap-6 text-sm my-3">
             <div className="flex items-center gap-2">
               <span>
-                Sort by category : <span>All</span>
+                Sort by : <span className="font-medium">Popular</span>
               </span>
               <Ellipsis fontWeight={600} />
             </div>
+            <div className="h-[18px] bg-gray-400 w-[2px]"></div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span>
+                  Sort by category : <span>All</span>
+                </span>
+                <Ellipsis fontWeight={600} />
+              </div>
+            </div>
           </div>
-        </div>
-        {/* Cards */}
-        <div className="flex flex-wrap gap-6">
-          {episodes?.map((item) => (
-            <CatCard
-              key={item?.id}
-              title={item?.title}
-              image={item?.picture_url}
-              date={item?.published_at}
-              description={item?.description}
-              time={item?.duration}
-              podcastId={item?.podcast_id}
-              episodeId={item?.id}
-            />
-          ))}
-        </div>
-        {/* Pagination */}
-        <div className="mb-4">
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={paginationData?.last_page || 1}
-            onPageChange={setCurrentPage}
-          />
-        </div>
-        <Separator />
-        <div className="mt-10 mb-15 flex flex-col gap-4">
-          <h1 className="text-lg text-[#5A5A5A] font-bold">
-            Explore Other Categories
-          </h1>
-          <div className="flex flex-wrap gap-8 justify-center">
-            {cardData2.map((category) => (
-              <ExploreOtherCat {...category} key={category.id} />
+          {/* Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            {episodes?.map((item) => (
+              <CatCard
+                key={item?.id}
+                title={item?.title}
+                image={item?.picture_url}
+                date={item?.published_at}
+                description={item?.description}
+                time={item?.duration}
+                podcastId={item?.podcast_id}
+                episodeId={item?.id}
+              />
             ))}
+          </div>
+          {/* Pagination */}
+          <div className="mb-4">
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={paginationData?.last_page || 1}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+          <div>
+            <Separator className="my-8" />
+          </div>
+          <div className="mt-10 mb-15 flex flex-col gap-4">
+            <h1 className="text-lg text-[#5A5A5A] font-bold">
+              Explore Other Categories
+            </h1>
+            <div className="flex flex-wrap gap-8 justify-center">
+              {cardData2.map((category) => (
+                <ExploreOtherCat {...category} key={category.id} />
+              ))}
+            </div>
           </div>
         </div>
       </CustomCardLayout>

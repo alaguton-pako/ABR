@@ -17,7 +17,7 @@ const CustomCardTwo: React.FC<CustomCardTwoProps> = ({
   return (
     <>
       <Link href={`/podcast/${podcastId ?? 1}`}>
-        <div className="group w-[300px] h-[400px] rounded-lg overflow-hidden bg-[#F4F4F4] hover:bg-[#E0E0E0] text-card-foreground flex flex-col transition-all duration-300 relative">
+        <div className="group w-full h-[400px] rounded-lg overflow-hidden bg-[#F4F4F4] hover:bg-[#E0E0E0] text-card-foreground flex flex-col transition-all duration-300 relative">
           {/* Top Section with padding */}
           <div className="flex-grow p-4 flex flex-col">
             {/* Image section */}
@@ -55,12 +55,10 @@ const CustomCardTwo: React.FC<CustomCardTwoProps> = ({
               </div>
             </div>
           </div>
-
           {/* Play Button - Bottom Right (Fixed Position) */}
           <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
             <PlayButton />
           </div>
-
           {/* Bottom border line - Darker on hover */}
           <div className="h-[8px] rounded-4xl w-full bg-[#D5D3D3] group-hover:bg-[#B8B6B6] rounded-b-xl transition-colors duration-300" />
         </div>

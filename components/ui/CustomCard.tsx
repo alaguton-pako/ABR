@@ -20,7 +20,7 @@ export const CustomCard: React.FC<PodcastCardProps> = ({
     <>
       <Link href={`/podcast/${podcastId}/episode/${episodeId}`}>
         <div
-          className={`w-[247px] h-[400px] rounded-md overflow-hidden bg-card text-card-foreground ${className}`}
+          className={`w-full h-[400px] rounded-md overflow-hidden bg-card text-card-foreground ${className}`}
         >
           {/* Top Image */}
           <div className="h-1/2 relative">
