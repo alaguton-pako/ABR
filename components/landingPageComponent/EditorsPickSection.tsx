@@ -22,7 +22,10 @@ const EditorsPickSection = () => {
         <div className="w-[90%] mx-auto flex flex-col gap-6 p-4">
           {/* Header Section */}
           <div className="flex flex-col gap-1">
-            <h1 className="text-[#282828] text-xl font-bold">EDITOR'S PICKS</h1>
+            <h1 className="text-[#282828] text-xl font-bold">
+              EDITOR&apos;S PICKS
+            </h1>
+
             <h3 className="text-[#CC0001] text-xs font-semibold border-l-4 pl-1 border-[#5A5A5A]">
               Featured Episodes
             </h3>
