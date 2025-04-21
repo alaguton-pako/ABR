@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useGetTopPodcasts } from "@/feature/podcast/api";
 import Image from "next/image";
 import PlayButton from "../ui/PlayButton";
 import PodcastCard from "../ui/PodcastCard";

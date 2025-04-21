@@ -4,7 +4,6 @@ import CustomCardLayout from "../ui/CustomCardLayout";
 import Sections from "../ui/Sections";
 import { useGetTopCategories } from "@/feature/category/api";
 import { PodcastCategory } from "@/feature/category/types";
-import { title } from "process";
 
 const OtherPodcast = () => {
   const { data, isLoading } = useGetTopCategories();

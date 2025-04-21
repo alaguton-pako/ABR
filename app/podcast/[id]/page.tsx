@@ -6,9 +6,8 @@ import Content from "@/components/podcastPageComponent/Content";
 import { useParams } from "next/navigation";
 import { useGetPodcastById } from "@/feature/podcast/api";
 import { RedLoader } from "@/components/ui/Loader";
-import CustomCardLayout from "@/components/ui/CustomCardLayout";
 
-const page = () => {
+const Page = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetPodcastById(id as string);
   const podcastContent = data && data?.data;
@@ -104,4 +103,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

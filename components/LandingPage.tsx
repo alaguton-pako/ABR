@@ -12,7 +12,6 @@ import TechSportBusiness from "./landingPageComponent/TechSportBusiness";
 import OtherPodcast from "./landingPageComponent/OtherPodcast";
 import NewsLetter from "./landingPageComponent/NewsLetter";
 import Partners from "./landingPageComponent/Partners";
-import Footer from "./Footer";
 
 const LandingPage = () => {
   return (

@@ -14,7 +14,7 @@ import { RedLoader } from "@/components/ui/Loader";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-const page = () => {
+const Page = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { id, episodeId } = useParams();
   const parsedEpisodeId = episodeId ? parseInt(episodeId as string, 10) : null;
@@ -132,4 +132,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

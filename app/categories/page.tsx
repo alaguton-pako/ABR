@@ -9,7 +9,7 @@ import { useGetLatestEpisodes } from "@/feature/episode/api";
 import { useState } from "react";
 import { RedLoader } from "@/components/ui/Loader";
 
-const page = () => {
+const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 20;
   const { data, isLoading } = useGetLatestEpisodes(currentPage, perPage);
@@ -126,4 +126,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
