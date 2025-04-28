@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 
 import createSessionStorage from "redux-persist/lib/storage/session";
 import playerReducer from "./playerSlice";
-import { combineReducers } from "redux"; // Add this import
+import { combineReducers } from "redux"; 
 
 
 const rootReducer = combineReducers({
@@ -11,8 +11,8 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-  key: 'podcastPlayerSession', // Different key to avoid conflicts
-  storage: createSessionStorage, // <-- Use sessionStorage instead
+  key: 'podcastPlayerSession', 
+  storage: createSessionStorage, 
   whitelist: ['player'],
   debug: true
 };
@@ -21,7 +21,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer, // Use the persisted reducer directly
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -30,7 +30,6 @@ export const store = configureStore({
     }),
 });
 
-// 4. Enhanced persistor with debug callbacks
 export const persistor = persistStore(store, null, () => {
   console.log('Rehydration complete');
 });

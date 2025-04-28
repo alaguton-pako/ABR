@@ -9,7 +9,6 @@ interface PlayerState {
   isMuted: boolean;
   duration: number;
   podcastId: string | null;
-  // Remove audioElement from state
 }
 
 const initialState: PlayerState = {
@@ -21,7 +20,6 @@ const initialState: PlayerState = {
   isMuted: false,
   duration: 0,
   podcastId: null,
-  // Remove audioElement initialization
 };
 
 const playerSlice = createSlice({
@@ -38,24 +36,16 @@ const playerSlice = createSlice({
       }>
     ) => {
       const isNewEpisode = state.currentEpisodeId !== action.payload.episodeId;
-      
+
       if (isNewEpisode) {
-        // For a completely new episode, reset all state
         state.currentPodcastUrl = action.payload.url;
         state.currentTime = 0;
-        state.duration = 0;  // Reset duration too
-        state.isPlaying = false; // Explicitly set to not playing
+        state.duration = 0;
       }
-      
-      // Always update these values
       state.currentEpisodeId = action.payload.episodeId;
       state.currentPodcastTitle = action.payload.title;
       state.podcastId = action.payload.podcastId;
-      
-      // Only set to playing if it's NOT a new episode (toggle behavior)
-      if (!isNewEpisode) {
-        state.isPlaying = true;
-      }
+      state.isPlaying = true;
     },
 
     pauseEpisode: (state) => {
@@ -76,7 +66,6 @@ const playerSlice = createSlice({
   },
 });
 
-// Remove initAudio and cleanupAudio from exports
 export const {
   playEpisode,
   pauseEpisode,

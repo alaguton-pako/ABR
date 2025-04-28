@@ -2,12 +2,12 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { setCurrentTime, setDuration, pauseEpisode } from "@/store/playerSlice";
-import { store } from "@/store"; 
+import { store } from "@/store";
 
 const PersistentAudioPlayer = () => {
   const dispatch = useDispatch();
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  
+
   // Get all necessary state from Redux
   const { currentPodcastUrl, isPlaying, currentTime, isMuted } = useSelector(
     (state: RootState) => state.player
@@ -24,9 +24,9 @@ const PersistentAudioPlayer = () => {
       audio.src = persistedState.currentPodcastUrl;
       audio.currentTime = persistedState.currentTime;
       audio.muted = persistedState.isMuted;
-      
+
       if (persistedState.isPlaying) {
-        audio.play().catch(error => {
+        audio.play().catch((error) => {
           console.error("Autoplay failed:", error);
           dispatch(pauseEpisode());
         });
@@ -50,17 +50,17 @@ const PersistentAudioPlayer = () => {
       dispatch(pauseEpisode());
     };
 
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('ended', handleEnded);
-    audio.addEventListener('error', handleError);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("error", handleError);
 
     return () => {
       audio.pause();
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('error', handleError);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("error", handleError);
       audio.src = "";
     };
   }, [dispatch]);
@@ -68,19 +68,30 @@ const PersistentAudioPlayer = () => {
   // Handle URL changes
   useEffect(() => {
     if (!audioRef.current || !currentPodcastUrl) return;
-    
+
     if (audioRef.current.src !== currentPodcastUrl) {
+      audioRef.current.pause(); // stop the previous audio
       audioRef.current.src = currentPodcastUrl;
       audioRef.current.currentTime = 0;
+
+      if (isPlaying) {
+        // Delay slightly to allow new src to load
+        setTimeout(() => {
+          audioRef.current?.play().catch((error) => {
+            console.error("Playback after URL change failed:", error);
+            dispatch(pauseEpisode());
+          });
+        }, 0);
+      }
     }
-  }, [currentPodcastUrl]);
+  }, [currentPodcastUrl, isPlaying, dispatch]);
 
   // Handle play/pause
   useEffect(() => {
     if (!audioRef.current) return;
-    
+
     if (isPlaying) {
-      audioRef.current.play().catch(error => {
+      audioRef.current.play().catch((error) => {
         console.error("Playback failed:", error);
         dispatch(pauseEpisode());
       });
@@ -99,7 +110,7 @@ const PersistentAudioPlayer = () => {
   // Handle seeking
   useEffect(() => {
     if (!audioRef.current) return;
-    
+
     // Only update if difference is significant (>0.5s)
     if (Math.abs(audioRef.current.currentTime - currentTime) > 0.5) {
       audioRef.current.currentTime = currentTime;

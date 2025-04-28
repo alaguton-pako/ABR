@@ -29,46 +29,36 @@ const PlayComponent: React.FC<PlayComponentProps> = ({
   const dispatch = useDispatch();
   const { isPlaying, currentTime, duration, isMuted, currentEpisodeId } =
     useSelector((state: RootState) => state.player);
-
-  // Only show playing state if this is the active episode AND isPlaying
   const isActiveEpisode = currentEpisodeId === episodeId.toString();
   const showAsPlaying = isPlaying && isActiveEpisode;
 
   const togglePlay = () => {
-    // Early return if no episode is selected
     if (!contentUrl) return;
-
+  
     if (isActiveEpisode) {
-      // Toggle play/pause for current episode
       if (isPlaying) {
         dispatch(pauseEpisode());
       } else {
-        dispatch(
-          playEpisode({
-            episodeId: episodeId.toString(),
-            title: podcastTitle,
-            url: contentUrl,
-            podcastId: podcastId.toString(),
-          })
-        );
-      }
-    } else {
-      // For new episode, force pause state first
-      dispatch(pauseEpisode());
-      // Then start playing new episode
-      dispatch(
-        playEpisode({
+        dispatch(playEpisode({
           episodeId: episodeId.toString(),
           title: podcastTitle,
           url: contentUrl,
           podcastId: podcastId.toString(),
-        })
-      );
+        }));
+      }
+    } else {
+      dispatch(playEpisode({
+        episodeId: episodeId.toString(),
+        title: podcastTitle,
+        url: contentUrl,
+        podcastId: podcastId.toString(),
+      }));
     }
   };
+  
 
   const handleSliderChange = (value: number[]) => {
-    if (!isActiveEpisode) return; // Prevent seeking on inactive episodes
+    if (!isActiveEpisode) return; 
     const newTime = (value[0] / 100) * duration;
     dispatch(setCurrentTime(newTime));
   };

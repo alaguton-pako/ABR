@@ -20,10 +20,14 @@ export default function Providers({ children }: { children: ReactNode }) {
       >
         <QueryClientProvider client={queryClient}>
           {children}
-          <ReactQueryDevtools initialIsOpen={false} />
+
           <PersistentAudioPlayer />
         </QueryClientProvider>
       </PersistGate>
     </ReduxProvider>
   );
+}
+
+{
+  /* <ReactQueryDevtools initialIsOpen={false} /> */
 }
